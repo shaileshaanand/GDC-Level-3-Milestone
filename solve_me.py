@@ -27,6 +27,10 @@ class TasksCommand:
         except Exception:
             pass
 
+    def __init__(self):
+        self.read_completed()
+        self.read_current()
+
     def write_current(self):
         with open(self.TASKS_FILE, "w+") as f:
             f.truncate(0)
@@ -92,24 +96,22 @@ $ python tasks.py runserver # Starts the tasks management server"""
     def report(self):
         pass  # Use your existing implementation
 
-
-class TasksServer(TasksCommand, BaseHTTPRequestHandler):
-    def get_tasks_todo(self):
+    def render_pending_tasks(self):
         # Complete this method to return all incomplete tasks as HTML
         return "<h1> Show Incomplete Tasks Here </h1>"
 
-    def get_completed_tasks(self):
+    def render_completed_tasks(self):
         # Complete this method to return all completed tasks as HTML
         return "<h1> Show Completed Tasks Here </h1>"
 
-    def do_GET(self):
-        self.read_current()  # Helper method to get all current tasks
-        self.read_completed()  # Helper method to get all incomplete tasks
 
+class TasksServer(TasksCommand, BaseHTTPRequestHandler):
+    def do_GET(self):
+        task_command_object = TasksCommand()
         if self.path == "/tasks":
-            content = self.get_tasks_todo()
+            content = task_command_object.render_pending_tasks()
         elif self.path == "/completed":
-            content = self.get_completed_tasks()
+            content = task_command_object.render_completed_tasks()
         else:
             self.send_response(404)
             self.end_headers()

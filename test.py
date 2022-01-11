@@ -1,7 +1,11 @@
 import os
+import random
+import string
 import unittest
 
-from solve_me import TasksCommand
+from solve_me import TasksCommand, TasksServer
+
+random_choices = string.ascii_uppercase + string.digits + string.ascii_lowercase
 
 
 def reset_files():
@@ -70,6 +74,17 @@ class SimpleTest(unittest.TestCase):
         self.assertFalse("15" in tasks)
         completed = load_completed_file()
         self.assertFalse("Task 15" in completed)
+
+    def test_pending_render(self):
+        task = "".join(random.choices(random_choices, k=20))
+        self.command_object.add(["25", task])
+        self.assertIn(task, self.command_object.render_pending_tasks())
+
+    def test_completed_render(self):
+        task = "".join(random.choices(random_choices, k=20))
+        self.command_object.add(["35", task])
+        self.command_object.done(["35"])
+        self.assertIn(task, self.command_object.render_completed_tasks())
 
 
 unittest.main()
