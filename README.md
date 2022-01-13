@@ -11,8 +11,8 @@ $ python tasks.py help
 Usage :-
 $ python tasks.py add 2 hello world    # Add a new item with priority 2 and text "hello world" to the list
 $ python tasks.py ls                   # Show incomplete priority list items sorted by priority in ascending order
-$ python tasks.py del INDEX            # Delete the incomplete item with the given index
-$ python tasks.py done INDEX           # Mark the incomplete item with the given index as complete
+$ python tasks.py del PRIORITY_NUMBER  # Delete the incomplete item with the given priority
+$ python tasks.py done PRIORITY_NUMBER # Mark the incomplete item with the given priority as complete
 $ python tasks.py help                 # Show usage
 $ python tasks.py report               # Statistics
 $ python tasks.py runserver            # Starts the tasks management server
