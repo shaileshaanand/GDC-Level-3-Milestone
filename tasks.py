@@ -12,6 +12,7 @@ try:
     elif len(cli_args) == 1:
         command = cli_args[0]
     if len(cli_args) > 1:
+        command = cli_args[0]
         arguments = cli_args[1:]
     # Run the Task Command Class with the arguments supplied
     TasksCommand().run(command, arguments)
