@@ -27,7 +27,7 @@ You can style the page however you want as long as the content is present.
 The route for pending tasks are : https://localhost:8000/tasks
 The route for completed tasks are : https://localhost:8000/completed
 
-The methods to complete are `get_tasks_todo` and `get_completed_tasks` in the `TasksServer` class
+The methods to complete are `render_pending_tasks` and `render_completed_tasks` in the `TasksServer` class
 
 ## For Those who are looking for a challenge!
 

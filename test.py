@@ -45,7 +45,6 @@ def load_completed_file():
 
 class SimpleTest(unittest.TestCase):
     def setUp(self):
-        reset_files()
         self.command_object = TasksCommand()
 
     def test_add_tasks(self):
@@ -86,5 +85,5 @@ class SimpleTest(unittest.TestCase):
         self.command_object.done(["35"])
         self.assertIn(task, self.command_object.render_completed_tasks())
 
-
+reset_files()
 unittest.main()
