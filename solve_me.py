@@ -27,10 +27,6 @@ class TasksCommand:
         except Exception:
             pass
 
-    def init(self):
-        self.read_completed()
-        self.read_current()
-
     def write_current(self):
         with open(self.TASKS_FILE, "w+") as f:
             f.truncate(0)
@@ -108,7 +104,6 @@ $ python tasks.py runserver # Starts the tasks management server"""
 class TasksServer(TasksCommand, BaseHTTPRequestHandler):
     def do_GET(self):
         task_command_object = TasksCommand()
-        task_command_object.init()
         if self.path == "/tasks":
             content = task_command_object.render_pending_tasks()
         elif self.path == "/completed":
