@@ -77,28 +77,80 @@ $ python tasks.py report # Statistics
 $ python tasks.py runserver # Starts the tasks management server"""
         )
 
+    def shift_items(self, priority):
+        if priority + 1 in self.current_items:
+            self.shift_items(priority + 1)
+        self.current_items[priority + 1] = self.current_items[priority]
+
     def add(self, args):
-        pass  # Use your existing implementation
+        priority = int(args[0])
+        task_text = args[1]
+        self.read_current()
+        if priority in self.current_items:
+            self.shift_items(priority)
+        self.current_items[priority] = task_text
+        self.write_current()
+        print(f'Added task: "{task_text}" with priority {priority}')
 
     def done(self, args):
-        pass  # Use your existing implementation
+        priority = int(args[0])
+        self.read_current()
+        if priority in self.current_items:
+            self.completed_items.append(self.current_items[priority])
+            del self.current_items[priority]
+            self.write_current()
+            self.write_completed()
+            print(f"Marked item as done.")
+        else:
+            print(f"Error: no incomplete item with priority {priority} exists.")
 
     def delete(self, args):
-        pass  # Use your existing implementation
+        priority = int(args[0])
+        self.read_current()
+        if priority in self.current_items:
+            del self.current_items[priority]
+            self.write_current()
+            print(f"Deleted item with priority {priority}")
+        else:
+            print(
+                f"Error: item with priority {priority} does not exist. Nothing deleted."
+            )
 
     def ls(self):
-        pass  # Use your existing implementation
+        self.read_current()
+        for i, key in enumerate(sorted(self.current_items.keys()), 1):
+            print(f"{i}. {self.current_items[key]} [{key}]")
 
     def report(self):
-        pass  # Use your existing implementation
+        print("Pending :", len(self.current_items))
+        self.ls()
+        print()
+        print("Completed :", len(self.completed_items))
+        for i, item in enumerate(self.completed_items, 1):
+            print(f"{i}. {item}")
 
     def render_pending_tasks(self):
-        # Complete this method to return all incomplete tasks as HTML
-        return "<h1> Show Incomplete Tasks Here </h1>"
+        self.read_current
+        tasks = (
+            "<h1> Completed</h1>\n<ul>\n"
+            + "\n".join(
+                [
+                    f"<li>{self.current_items[priority]} [{priority}]</li>"
+                    for priority in sorted(self.current_items.keys())
+                ]
+            )
+            + "\n</ul>"
+        )
+        return tasks
 
     def render_completed_tasks(self):
-        # Complete this method to return all completed tasks as HTML
-        return "<h1> Show Completed Tasks Here </h1>"
+        self.read_completed()
+        tasks = (
+            "<h1> Completed</h1>\n<ul>\n"
+            + "\n".join([f"<li>{task}</li>" for task in self.completed_items])
+            + "\n</ul>"
+        )
+        return tasks
 
 
 class TasksServer(TasksCommand, BaseHTTPRequestHandler):
